@@ -21,9 +21,7 @@ class InnmindEventBusExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(Extension::class, $extension);
         $this->assertNull($extension->load(
-            [[
-                'stack' => ['foo']
-            ]],
+            [],
             $container
         ));
 
@@ -32,8 +30,26 @@ class InnmindEventBusExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($container->hasParameter('innmind_event_bus.stack'));
         $this->assertSame(
-            ['foo'],
+            ['queue', 'default'],
             $container->getParameter('innmind_event_bus.stack')
+        );
+        $this->assertSame(
+            'innmind_event_bus.queue',
+            (string) $container->getAlias('innmind_event_bus')
+        );
+    }
+
+    /**
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage The path "innmind_event_bus.stack" should have at least 1 element(s) defined.
+     */
+    public function testThrowWhenEmptyStack()
+    {
+        (new InnmindEventBusExtension)->load(
+            [[
+                'stack' => [],
+            ]],
+            new ContainerBuilder
         );
     }
 }
