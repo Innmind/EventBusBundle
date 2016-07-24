@@ -5,7 +5,8 @@ namespace Tests\Innmind\EventBusBundle;
 
 use Innmind\EventBusBundle\{
     InnmindEventBusBundle,
-    DependencyInjection\Compiler\BuildEventBusStackPass
+    DependencyInjection\Compiler\BuildEventBusStackPass,
+    DependencyInjection\Compiler\RegisterListenersPass
 };
 use Symfony\Component\{
     HttpKernel\Bundle\Bundle,
@@ -24,10 +25,14 @@ class InnmindEventBusBundleTest extends \PHPUnit_Framework_TestCase
         $passes = $container
             ->getCompilerPassConfig()
             ->getBeforeOptimizationPasses();
-        $this->assertSame(1, count($passes));
+        $this->assertSame(2, count($passes));
         $this->assertInstanceOf(
             BuildEventBusStackPass::class,
             $passes[0]
+        );
+        $this->assertInstanceOf(
+            RegisterListenersPass::class,
+            $passes[1]
         );
     }
 }

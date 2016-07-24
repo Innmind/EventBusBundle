@@ -3,7 +3,10 @@ declare(strict_types = 1);
 
 namespace Innmind\EventBusBundle;
 
-use Innmind\EventBusBundle\DependencyInjection\Compiler\BuildEventBusStackPass;
+use Innmind\EventBusBundle\DependencyInjection\Compiler\{
+    BuildEventBusStackPass,
+    RegisterListenersPass
+};
 use Symfony\Component\{
     HttpKernel\Bundle\Bundle,
     DependencyInjection\ContainerBuilder
@@ -18,6 +21,8 @@ final class InnmindEventBusBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new BuildEventBusStackPass);
+        $container
+            ->addCompilerPass(new BuildEventBusStackPass)
+            ->addCompilerPass(new RegisterListenersPass);
     }
 }
