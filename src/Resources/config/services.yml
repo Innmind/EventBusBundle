@@ -1,0 +1,18 @@
+services:
+    innmind_event_bus.default:
+        class: Innmind\EventBusBundle\ContainerAwareEventBus
+        arguments:
+            - '@service_container'
+            - []
+        factory:
+            - Innmind\EventBusBundle\Factory\ContainerAwareEventBusFactory
+            - make
+        tags:
+            - { name: innmind_event_bus, alias: default }
+
+    innmind_event_bus.queue:
+        class: Innmind\EventBus\QueueableEventBus
+        arguments:
+            - ~
+        tags:
+            - { name: innmind_event_bus, alias: queue }
