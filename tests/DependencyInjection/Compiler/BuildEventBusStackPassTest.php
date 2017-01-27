@@ -10,7 +10,8 @@ use Innmind\EventBusBundle\{
 };
 use Innmind\EventBus\{
     EventBusInterface,
-    QueueableEventBus
+    QueueableEventBus,
+    ClassName\InheritanceExtractor
 };
 use Symfony\Component\DependencyInjection\{
     Compiler\CompilerPassInterface,
@@ -94,11 +95,16 @@ class BuildEventBusStackPassTest extends \PHPUnit_Framework_TestCase
                 ContainerAwareEventBus::class,
                 [
                     new Reference('service_container'),
-                    ['stdClass' => ['listener']]
+                    ['stdClass' => ['listener']],
+                    new Reference('extractor'),
                 ]
             ))
                 ->setFactory([ContainerAwareEventBusFactory::class, 'make'])
                 ->addTag('innmind_event_bus', ['alias' => 'default'])
+        );
+        $container->setDefinition(
+            'extractor',
+            new Definition(InheritanceExtractor::class)
         );
         $container->set(
             'listener',

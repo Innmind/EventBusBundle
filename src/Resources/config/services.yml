@@ -4,6 +4,7 @@ services:
         arguments:
             - '@service_container'
             - []
+            - '@innmind_event_bus.class_name.composite_extractor'
         factory:
             - Innmind\EventBusBundle\Factory\ContainerAwareEventBusFactory
             - make
@@ -16,3 +17,18 @@ services:
             - ~
         tags:
             - { name: innmind_event_bus, alias: queue }
+
+    innmind_event_bus.class_name.inheritance_extractor:
+        class: Innmind\EventBus\ClassName\InheritanceExtractor
+        public: false
+
+    innmind_event_bus.class_name.wildcard_extractor:
+        class: Innmind\EventBus\ClassName\WildcardExtractor
+        public: false
+
+    innmind_event_bus.class_name.composite_extractor:
+        class: Innmind\EventBus\ClassName\CompositeExtractor
+        public: false
+        arguments:
+            - '@innmind_event_bus.class_name.inheritance_extractor'
+            - '@innmind_event_bus.class_name.wildcard_extractor'
