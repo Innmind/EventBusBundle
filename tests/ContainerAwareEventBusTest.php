@@ -7,7 +7,11 @@ use Innmind\EventBusBundle\{
     ContainerAwareEventBus,
     Factory\ContainerAwareEventBusFactory
 };
-use Innmind\EventBus\EventBusInterface;
+use Innmind\EventBus\{
+    EventBusInterface,
+    ClassName\ExtractorInterface,
+    ClassName\InheritanceExtractor
+};
 use Innmind\Immutable\{
     Map,
     SetInterface
@@ -27,7 +31,8 @@ class ContainerAwareEventBusTest extends \PHPUnit_Framework_TestCase
             EventBusInterface::class,
             new ContainerAwareEventBus(
                 $this->createMock(ContainerInterface::class),
-                new Map('string', SetInterface::class)
+                new Map('string', SetInterface::class),
+                $this->createMock(ExtractorInterface::class)
             )
         );
     }
@@ -39,7 +44,8 @@ class ContainerAwareEventBusTest extends \PHPUnit_Framework_TestCase
     {
         new ContainerAwareEventBus(
             $this->createMock(ContainerInterface::class),
-            new Map('string', 'array')
+            new Map('string', 'array'),
+            $this->createMock(ExtractorInterface::class)
         );
     }
 
@@ -50,7 +56,8 @@ class ContainerAwareEventBusTest extends \PHPUnit_Framework_TestCase
     {
         (new ContainerAwareEventBus(
             $this->createMock(ContainerInterface::class),
-            new Map('string', SetInterface::class)
+            new Map('string', SetInterface::class),
+            $this->createMock(ExtractorInterface::class)
         ))->dispatch([]);
     }
 
@@ -79,7 +86,7 @@ class ContainerAwareEventBusTest extends \PHPUnit_Framework_TestCase
                 get_class($listener),
                 [
                     new Reference('service_container'),
-                    new Reference('event_bus')
+                    new Reference('event_bus'),
                 ]
             )
         );
@@ -89,10 +96,15 @@ class ContainerAwareEventBusTest extends \PHPUnit_Framework_TestCase
                 ContainerAwareEventBus::class,
                 [
                     new Reference('service_container'),
-                    ['stdClass' => ['listener']]
+                    ['stdClass' => ['listener']],
+                    new Reference('extractor'),
                 ]
             ))
                 ->setFactory([ContainerAwareEventBusFactory::class, 'make'])
+        );
+        $container->setDefinition(
+            'extractor',
+            new Definition(InheritanceExtractor::class)
         );
 
         $this->assertFalse($container->hasParameter('called'));

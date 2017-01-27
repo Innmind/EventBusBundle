@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\EventBusBundle\Factory;
 
 use Innmind\EventBusBundle\ContainerAwareEventBus;
+use Innmind\EventBus\ClassName\ExtractorInterface;
 use Innmind\Immutable\{
     Map,
     SetInterface,
@@ -15,7 +16,8 @@ final class ContainerAwareEventBusFactory
 {
     public static function make(
         ContainerInterface $container,
-        array $services
+        array $services,
+        ExtractorInterface $extractor
     ): ContainerAwareEventBus {
         $map = new Map('string', SetInterface::class);
 
@@ -29,6 +31,6 @@ final class ContainerAwareEventBusFactory
             $map = $map->put($class, $set);
         }
 
-        return new ContainerAwareEventBus($container, $map);
+        return new ContainerAwareEventBus($container, $map, $extractor);
     }
 }

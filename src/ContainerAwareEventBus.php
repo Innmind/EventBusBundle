@@ -7,7 +7,8 @@ use Innmind\EventBusBundle\Exception\InvalidArgumentException;
 use Innmind\EventBus\{
     EventBusInterface,
     EventBus,
-    Exception\InvalidArgumentException as InvalidEventException
+    Exception\InvalidArgumentException as InvalidEventException,
+    ClassName\ExtractorInterface
 };
 use Innmind\Immutable\{
     Map,
@@ -21,11 +22,13 @@ final class ContainerAwareEventBus implements EventBusInterface
 {
     private $container;
     private $listeners;
+    private $extractor;
     private $bus;
 
     public function __construct(
         ContainerInterface $container,
-        MapInterface $listeners
+        MapInterface $listeners,
+        ExtractorInterface $extractor
     ) {
         if (
             (string) $listeners->keyType() !== 'string' ||
@@ -42,6 +45,7 @@ final class ContainerAwareEventBus implements EventBusInterface
 
         $this->container = $container;
         $this->listeners = $listeners;
+        $this->extractor = $extractor;
     }
 
     /**
@@ -82,6 +86,6 @@ final class ContainerAwareEventBus implements EventBusInterface
                     );
                 }
             );
-        $this->bus = new EventBus($listeners);
+        $this->bus = new EventBus($listeners, $this->extractor);
     }
 }
