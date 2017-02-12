@@ -11,8 +11,9 @@ use Symfony\Component\{
     HttpKernel\DependencyInjection\Extension,
     DependencyInjection\ContainerBuilder
 };
+use PHPUnit\Framework\TestCase;
 
-class InnmindEventBusExtensionTest extends \PHPUnit_Framework_TestCase
+class InnmindEventBusExtensionTest extends TestCase
 {
     public function testLoad()
     {

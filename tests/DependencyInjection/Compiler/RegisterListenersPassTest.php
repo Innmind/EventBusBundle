@@ -12,8 +12,9 @@ use Symfony\Component\DependencyInjection\{
     ContainerBuilder,
     Definition
 };
+use PHPUnit\Framework\TestCase;
 
-class RegisterListenersPassTest extends \PHPUnit_Framework_TestCase
+class RegisterListenersPassTest extends TestCase
 {
     public function testInterface()
     {
