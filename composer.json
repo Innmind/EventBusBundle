@@ -15,17 +15,27 @@
         "issues": "http://github.com/Innmind/EventBusBundle/issues"
     },
     "require": {
-        "php": "~7.0",
+        "php": "~7.1",
         "symfony/http-kernel": "~3.0",
         "symfony/config": "~3.0",
         "symfony/dependency-injection": "~3.0",
-        "innmind/event-bus": "~1.0",
+        "innmind/event-bus": "~2.0",
         "symfony/yaml": "~3.0"
     },
     "autoload": {
         "psr-4": {
-            "Innmind\\EventBusBundle\\": "src/",
+            "Innmind\\EventBusBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Tests\\Innmind\\EventBusBundle\\": "tests/"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --colors=always"
     }
 }

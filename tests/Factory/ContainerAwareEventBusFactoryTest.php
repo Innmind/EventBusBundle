@@ -9,8 +9,9 @@ use Innmind\EventBusBundle\{
 };
 use Innmind\EventBus\ClassName\ExtractorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use PHPUnit\Framework\TestCase;
 
-class ContainerAwareEventBusFactoryTest extends \PHPUnit_Framework_TestCase
+class ContainerAwareEventBusFactoryTest extends TestCase
 {
     public function testMake()
     {

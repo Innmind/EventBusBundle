@@ -22,8 +22,9 @@ use Symfony\Component\DependencyInjection\{
     Reference,
     Definition
 };
+use PHPUnit\Framework\TestCase;
 
-class ContainerAwareEventBusTest extends \PHPUnit_Framework_TestCase
+class ContainerAwareEventBusTest extends TestCase
 {
     public function testInterface()
     {
